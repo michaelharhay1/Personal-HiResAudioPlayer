@@ -4,17 +4,14 @@
 #include "gui.h"
 
 int main() {
-    
-    // Init AudioPlayer and GUI objects
     AudioPlayer player;
-    GUI gui;
 
-    // Load audio file, return error if failed
+    // Load the audio file
     if (!player.loadAudioFile("audio_files/test.wav")) {
         return -1;
     }
 
-    // Run the GUI
+    GUI gui(player);
     gui.run();
 
     return 0;

@@ -9,15 +9,15 @@ public:
     AudioPlayer();
     ~AudioPlayer();
 
-    bool loadAudioFile(const std::string& filename);
+    bool loadAudioFile(const std::string& filepath);
     void play();
     void pause();
     void stop();
     bool isPlaying() const;
 
 private:
-    sf::SoundBuffer buffer;
-    sf::Sound sound;
+    sf::Music music;
+    bool playing = false;
 };
 
-#endif // AUDIO_PLAYER_H
+#endif

@@ -6,27 +6,29 @@ AudioPlayer::AudioPlayer() {}
 
 AudioPlayer::~AudioPlayer() {}
 
-bool AudioPlayer::loadAudioFile(const std::string& filename) {
-    if (!buffer.loadFromFile(filename)) {
+bool AudioPlayer::loadAudioFile(const std::string& filepath) {
+    if (!music.openFromFile(filepath)) {
         std::cerr << "Error loading audio file!" << std::endl;
         return false;
     }
-    sound.setBuffer(buffer);
     return true;
 }
 
 void AudioPlayer::play() {
-    sound.play();
+    music.play();
+    playing = true;
 }
 
 void AudioPlayer::pause() {
-    sound.pause();
+    music.pause();
+    playing = false;
 }
 
 void AudioPlayer::stop() {
-    sound.stop();
+    music.stop();
+    playing = false;
 }
 
 bool AudioPlayer::isPlaying() const {
-    return sound.getStatus() == sf::Sound::Playing;
+    return playing;
 }

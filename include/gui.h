@@ -6,7 +6,7 @@
 
 class GUI {
 public:
-    GUI();
+    GUI(AudioPlayer& player);
     void run();
 
 private:
@@ -17,12 +17,10 @@ private:
     
     sf::RenderWindow window;
     sf::RectangleShape playButton;
+    sf::RectangleShape pauseButton;
     sf::RectangleShape stopButton;
 
-    AudioPlayer player;
-
-    sf::Music music;
-    bool isPlaying = false;
+    AudioPlayer& audioPlayer;
 };
 
 #endif // GUI_H

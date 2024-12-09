@@ -16,9 +16,14 @@ private:
     void render();
     
     sf::RenderWindow window;
+    sf::RectangleShape divider;
+
     sf::RectangleShape playButton;
     sf::RectangleShape pauseButton;
     sf::RectangleShape stopButton;
+
+    sf::Font font;
+    sf::Text text;
 
     AudioPlayer& audioPlayer;
 };

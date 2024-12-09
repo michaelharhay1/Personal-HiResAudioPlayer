@@ -17,22 +17,37 @@ void GUI::run() {
 }
 
 void GUI::createMainWindow() {
-    window.create(sf::VideoMode(800, 600), "HiRes Audio Player");
+    window.create(sf::VideoMode(600, 300), "HiRes Audio Player");
+
+    // Divider setup
+    divider.setSize(sf::Vector2f(5, window.getSize().y));
+    divider.setPosition((window.getSize().x) / 2, 0);
+    divider.setFillColor(sf::Color(0x9A9A9AFF));
 
     // Play button setup
     playButton.setSize(sf::Vector2f(50, 50));
-    playButton.setPosition(50, 50);
+    playButton.setPosition(25, 50);
     playButton.setFillColor(sf::Color::Green);
 
     // Pause button setup
     pauseButton.setSize(sf::Vector2f(50, 50));
-    pauseButton.setPosition(150, 50);
+    pauseButton.setPosition(100, 50);
     pauseButton.setFillColor(sf::Color::Yellow);
 
     // Stop button setup
     stopButton.setSize(sf::Vector2f(50, 50));
-    stopButton.setPosition(250, 50);
+    stopButton.setPosition(175, 50);
     stopButton.setFillColor(sf::Color::Red);
+
+    // Text setup
+    if (!font.loadFromFile("/Library/Fonts/Arial Unicode.ttf")) {
+        std::cerr << "Error: Could not load font!" << std::endl;
+    }
+    text.setFont(font);
+    text.setPosition(sf::Vector2f(25, 250));
+    text.setFillColor(sf::Color::White);
+    text.setCharacterSize(20);
+    text.setString("No distractions. Only music.");
 }
 
 void GUI::update() {
@@ -78,8 +93,10 @@ void GUI::handleEvents() {
 
 void GUI::render() {
     window.clear();
+    window.draw(divider);
     window.draw(playButton);
     window.draw(pauseButton);
     window.draw(stopButton);
+    window.draw(text);
     window.display();
 }

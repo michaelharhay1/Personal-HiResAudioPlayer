@@ -22,8 +22,7 @@ private:
     std::vector<std::string> playlist;
     sf::Music currentTrack;
     size_t currentTrackIndex;
-    bool playing = false;
-    bool paused = false;
+    bool playing;
 
     void playCurrentTrack();
     float getTrackPosition();

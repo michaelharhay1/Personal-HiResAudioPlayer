@@ -2,7 +2,7 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 
-AudioPlayer::AudioPlayer() {}
+AudioPlayer::AudioPlayer() : playing(false) {}
 
 AudioPlayer::~AudioPlayer() {}
 
@@ -10,29 +10,28 @@ void AudioPlayer::loadPlaylist(std::vector<std::string> files) {
     playlist = files;
     currentTrackIndex = 0;
     std::cout << "Successfully loaded " << playlist.size() << " tracks. " << std::endl;
+
+    if (currentTrack.openFromFile(playlist[currentTrackIndex])) {
+        std::cout << "Current track: " << playlist[currentTrackIndex] << std::endl;
+    } 
+    else {
+        std::cerr << "Failed to load track: " << playlist[currentTrackIndex] << std::endl;
+    }
 }
 
 void AudioPlayer::play() {
-    if (!playing) {
-        playCurrentTrack();
-    }
-    else if (paused) {
-        currentTrack.play();
-        paused = false;
-        playing = true;
-    }
-    
+    currentTrack.play();
+    playing = true;
 }
 
 void AudioPlayer::pause() {
     currentTrack.pause();
-    paused = true;
+    playing = false;
 }
 
 void AudioPlayer::stop() {
     currentTrack.stop();
     playing = false;
-    paused = false;
 }
 
 void AudioPlayer::next() {

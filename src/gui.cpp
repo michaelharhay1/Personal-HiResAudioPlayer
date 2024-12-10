@@ -94,6 +94,16 @@ void GUI::handleEvents() {
                 }
             }
         }
+
+        // Handle spacebar press
+        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space) {
+            if (!audioPlayer.isPlaying()) {
+                audioPlayer.play();
+            }
+            else if (audioPlayer.isPlaying()) {
+                audioPlayer.pause();
+            }
+        }
     }
 }
 

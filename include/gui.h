@@ -4,6 +4,19 @@
 #include <SFML/Graphics.hpp>
 #include "audio_player.h"
 
+class Button {
+public:
+    Button();
+    Button(const sf::Vector2f& position, const sf::Vector2f& size, const sf::String& text, const sf::Font& font, const sf::Color& color);
+
+    void draw(sf::RenderWindow& window);
+    bool clicked(const sf::Event& event);
+
+private:
+    sf::RectangleShape shape;
+    sf::Text buttonText;
+};
+
 class GUI {
 public:
     GUI(AudioPlayer& player);
@@ -18,9 +31,9 @@ private:
     sf::RenderWindow window;
     sf::RectangleShape divider;
 
-    sf::RectangleShape playButton;
-    sf::RectangleShape pauseButton;
-    sf::RectangleShape stopButton;
+    Button playButton;
+    Button pauseButton;
+    Button stopButton;
 
     sf::Font font;
     sf::Text text;

@@ -4,6 +4,9 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 
+
+// ---------- GUI Class Function Definitions ---------- //
+
 GUI::GUI(AudioPlayer& player) : audioPlayer(player) {
     createMainWindow();
 }
@@ -24,25 +27,17 @@ void GUI::createMainWindow() {
     divider.setPosition((window.getSize().x) / 2, 0);
     divider.setFillColor(sf::Color(0x9A9A9AFF));
 
-    // Play button setup
-    playButton.setSize(sf::Vector2f(50, 50));
-    playButton.setPosition(25, 50);
-    playButton.setFillColor(sf::Color::Green);
-
-    // Pause button setup
-    pauseButton.setSize(sf::Vector2f(50, 50));
-    pauseButton.setPosition(100, 50);
-    pauseButton.setFillColor(sf::Color::Yellow);
-
-    // Stop button setup
-    stopButton.setSize(sf::Vector2f(50, 50));
-    stopButton.setPosition(175, 50);
-    stopButton.setFillColor(sf::Color::Red);
-
-    // Text setup
+    // Load font
     if (!font.loadFromFile("/Library/Fonts/Arial Unicode.ttf")) {
         std::cerr << "Error: Could not load font!" << std::endl;
     }
+
+    // Buttons setup
+    playButton = Button(sf::Vector2f(25, 50), sf::Vector2f(50, 50), "Play", font, sf::Color::Green);
+    pauseButton = Button(sf::Vector2f(100, 50), sf::Vector2f(50, 50), "Pause", font, sf::Color::Yellow);
+    stopButton = Button(sf::Vector2f(175, 50), sf::Vector2f(50, 50), "Stop", font, sf::Color::Red);
+
+    // Text setup
     text.setFont(font);
     text.setPosition(sf::Vector2f(25, 250));
     text.setFillColor(sf::Color::White);
@@ -66,23 +61,17 @@ void GUI::handleEvents() {
 
         // Handle mouse clicks
         if (event.type == sf::Event::MouseButtonPressed) {
-            
-            // Play button is clicked
-            if (playButton.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+            if (playButton.clicked(event)) {
                 if (!audioPlayer.isPlaying()) {
                     audioPlayer.play();
                 }
             } 
-
-            // Pause button is clicked
-            else if (pauseButton.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+            else if (pauseButton.clicked(event)) {
                 if (audioPlayer.isPlaying()) {
                     audioPlayer.pause();
                 }
             }
-
-            // Stop button is clicked
-            else if (stopButton.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+            else if (stopButton.clicked(event)) {
                 if (audioPlayer.isPlaying()) {
                     audioPlayer.stop();
                 }
@@ -93,10 +82,49 @@ void GUI::handleEvents() {
 
 void GUI::render() {
     window.clear();
+
+    playButton.draw(window);
+    pauseButton.draw(window);
+    stopButton.draw(window);
     window.draw(divider);
-    window.draw(playButton);
-    window.draw(pauseButton);
-    window.draw(stopButton);
     window.draw(text);
+
     window.display();
 }
+
+
+// ---------- Button Class Function Definitions ---------- //
+Button::Button() {
+}
+
+Button::Button(const sf::Vector2f& position, const sf::Vector2f& size, const sf::String& text, const sf::Font& font, const sf::Color& color) {
+    shape.setPosition(position);
+    shape.setSize(size);
+    shape.setFillColor(color);
+
+    buttonText.setFont(font);
+    buttonText.setString(text);
+    buttonText.setCharacterSize(18);
+    buttonText.setFillColor(sf::Color::White);
+
+    // Center the text in the button
+    sf::FloatRect textBounds = buttonText.getLocalBounds();
+    buttonText.setOrigin(textBounds.left + textBounds.width / 2, textBounds.top + textBounds.height / 2);
+    buttonText.setPosition(position.x + size.x / 2, position.y + size.y / 2);
+}
+
+void Button::draw(sf::RenderWindow& window) {
+    window.draw(shape);
+    window.draw(buttonText);
+}
+
+bool Button::clicked(const sf::Event& event) {
+    if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+        sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
+        if (shape.getGlobalBounds().contains(mousePos)) {
+            return true;
+        }
+    }
+    return false;
+}
+

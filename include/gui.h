@@ -34,6 +34,9 @@ private:
     Button playButton;
     Button pauseButton;
     Button stopButton;
+    Button prevButton;
+    Button nextButton;
+    Button loadButton;
 
     sf::Font font;
     sf::Text text;

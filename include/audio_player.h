@@ -9,15 +9,24 @@ public:
     AudioPlayer();
     ~AudioPlayer();
 
-    bool loadAudioFile(const std::string& filepath);
+    void loadPlaylist(std::vector<std::string> files);
     void play();
     void pause();
     void stop();
+    void next();
+    void previous();
     bool isPlaying() const;
+    void update();
 
 private:
-    sf::Music music;
+    std::vector<std::string> playlist;
+    sf::Music currentTrack;
+    size_t currentTrackIndex;
     bool playing = false;
+    bool paused = false;
+
+    void playCurrentTrack();
+    float getTrackPosition();
 };
 
 #endif

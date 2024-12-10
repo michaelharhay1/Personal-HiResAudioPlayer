@@ -111,6 +111,12 @@
     "unordered_map": "cpp",
     "variant": "cpp",
     "vector": "cpp",
-    "algorithm": "cpp"
+    "algorithm": "cpp",
+    "*.mm": "cpp",
+    "deque": "cpp",
+    "memory": "cpp",
+    "print": "cpp",
+    "queue": "cpp",
+    "stack": "cpp"
   }
 }

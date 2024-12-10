@@ -1,6 +1,6 @@
 # Set compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -I./include -I/opt/homebrew/opt/sfml/include
+CXXFLAGS = -std=c++17 -Wall -I./include -I/opt/homebrew/opt/sfml/include -stdlib=libc++ -ObjC++
 
 # Directories
 BUILD_DIR = build
@@ -27,7 +27,7 @@ $(OBJ_DIR)/%.o: src/%.mm
 # Link the object files to create the executable
 $(EXEC): $(OBJ_FILES)
 	@mkdir -p $(EXEC_DIR)  # Make sure the build/ directory exists
-	$(CXX) $(OBJ_FILES) -L/opt/homebrew/opt/sfml/lib -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system -framework Cocoa -o $(EXEC)
+	$(CXX) $(OBJ_FILES) -L/opt/homebrew/opt/sfml/lib -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system -framework Cocoa -framework Foundation -o $(EXEC)
 
 # Clean up object files and executable
 clean:

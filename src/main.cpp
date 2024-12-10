@@ -5,12 +5,6 @@
 
 int main() {
     AudioPlayer player;
-
-    // Load the audio file
-    if (!player.loadAudioFile("audio_files/test.wav")) {
-        return -1;
-    }
-
     GUI gui(player);
     gui.run();
 

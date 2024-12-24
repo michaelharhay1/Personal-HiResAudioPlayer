@@ -22,7 +22,7 @@ void GUI::run() {
 }
 
 void GUI::createMainWindow() {
-    window.create(sf::VideoMode(600, 300), "HiRes Audio Player");
+    window.create(sf::VideoMode(450, 250), "HiRes Audio Player");
 
     // Background setup
     if (!backgroundTexture.loadFromFile("res/gray_background.jpg")) {
@@ -46,11 +46,11 @@ void GUI::createMainWindow() {
     stopButton = Button(sf::Vector2f(175, 50), sf::Vector2f(50, 50), "res/buttons/stop_button.png");
     prevButton = Button(sf::Vector2f(65, 125), sf::Vector2f(50, 50), "res/buttons/prev_button.png");
     nextButton = Button(sf::Vector2f(135, 125), sf::Vector2f(50, 50), "res/buttons/next_button.png");
-    loadButton = Button(sf::Vector2f(400, 50), sf::Vector2f(75, 75), "res/buttons/load_button.png");
+    loadButton = Button(sf::Vector2f(325, 50), sf::Vector2f(75, 75), "res/buttons/load_button.png");
 
     // Text setup
     text.setFont(font);
-    text.setPosition(sf::Vector2f(25, 250));
+    text.setPosition(sf::Vector2f(25, 210));
     text.setFillColor(sf::Color::White);
     text.setCharacterSize(20);
 }
@@ -74,7 +74,7 @@ void GUI::update() {
         text.setString("Currently playing: " + trackTitle);
     } 
     else {
-        text.setString("No distractions. Only music.");
+        text.setString("Click the headphones button to load music...");
     }
 }
 

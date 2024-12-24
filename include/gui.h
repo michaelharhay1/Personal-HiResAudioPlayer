@@ -2,19 +2,20 @@
 #define GUI_H
 
 #include <SFML/Graphics.hpp>
+#include <memory>
 #include "audio_player.h"
 
 class Button {
 public:
     Button();
-    Button(const sf::Vector2f& position, const sf::Vector2f& size, const sf::String& text, const sf::Font& font, const sf::Color& color);
+    Button(const sf::Vector2f& position, const sf::Vector2f& size, const std::string& imagePath);
 
     void draw(sf::RenderWindow& window);
     bool clicked(const sf::Event& event);
 
 private:
-    sf::RectangleShape shape;
-    sf::Text buttonText;
+    std::shared_ptr<sf::Texture> texture;
+    sf::Sprite sprite;
 };
 
 class GUI {
@@ -29,7 +30,9 @@ private:
     void render();
     
     sf::RenderWindow window;
-    sf::RectangleShape divider;
+
+    sf::Texture backgroundTexture;
+    sf::Sprite backgroundSprite;
 
     Button playButton;
     Button pauseButton;

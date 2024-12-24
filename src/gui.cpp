@@ -24,23 +24,29 @@ void GUI::run() {
 void GUI::createMainWindow() {
     window.create(sf::VideoMode(600, 300), "HiRes Audio Player");
 
+    // Background setup
+    if (!backgroundTexture.loadFromFile("res/gray_background.jpg")) {
+        std::cerr << "Failed to load background image!" << std::endl;
+    }
+    
+    backgroundSprite.setTexture(backgroundTexture);
+    backgroundSprite.setScale(
+        static_cast<float>(window.getSize().x) / backgroundTexture.getSize().x,
+        static_cast<float>(window.getSize().y) / backgroundTexture.getSize().y
+    );
+
     // Load font
     if (!font.loadFromFile("/Library/Fonts/Arial Unicode.ttf")) {
-        std::cerr << "Error: Could not load font!" << std::endl;
+        std::cout << "Error: Could not load font!" << std::endl;
     }
 
     // Buttons setup
-    playButton = Button(sf::Vector2f(25, 50), sf::Vector2f(50, 50), "Play", font, sf::Color::Green);
-    pauseButton = Button(sf::Vector2f(100, 50), sf::Vector2f(50, 50), "Pause", font, sf::Color::Yellow);
-    stopButton = Button(sf::Vector2f(175, 50), sf::Vector2f(50, 50), "Stop", font, sf::Color::Red);
-    prevButton = Button(sf::Vector2f(65, 125), sf::Vector2f(50, 50), "<<", font, sf::Color(0x9A9A9AFF));
-    nextButton = Button(sf::Vector2f(135, 125), sf::Vector2f(50, 50), ">>", font, sf::Color(0x9A9A9AFF));
-    loadButton = Button(sf::Vector2f(400, 50), sf::Vector2f(100, 25), "Load audio...", font, sf::Color(0x9A9A9AFF));
-
-    // Divider setup
-    divider.setSize(sf::Vector2f(5, window.getSize().y));
-    divider.setPosition((window.getSize().x) / 2, 0);
-    divider.setFillColor(sf::Color(0x9A9A9AFF));
+    playButton = Button(sf::Vector2f(25, 50), sf::Vector2f(50, 50), "res/buttons/play_button.png");
+    pauseButton = Button(sf::Vector2f(100, 50), sf::Vector2f(50, 50), "res/buttons/pause_button.png");
+    stopButton = Button(sf::Vector2f(175, 50), sf::Vector2f(50, 50), "res/buttons/stop_button.png");
+    prevButton = Button(sf::Vector2f(65, 125), sf::Vector2f(50, 50), "res/buttons/prev_button.png");
+    nextButton = Button(sf::Vector2f(135, 125), sf::Vector2f(50, 50), "res/buttons/next_button.png");
+    loadButton = Button(sf::Vector2f(400, 50), sf::Vector2f(75, 75), "res/buttons/load_button.png");
 
     // Text setup
     text.setFont(font);
@@ -63,6 +69,8 @@ void GUI::handleEvents() {
         if (event.type == sf::Event::Closed) {
             window.close();
         }
+
+        // Handle window resizing
 
         // Handle mouse clicks
         if (event.type == sf::Event::MouseButtonPressed) {
@@ -110,13 +118,14 @@ void GUI::handleEvents() {
 void GUI::render() {
     window.clear();
 
+    window.draw(backgroundSprite);
+
     playButton.draw(window);
     pauseButton.draw(window);
     stopButton.draw(window);
     prevButton.draw(window);
     nextButton.draw(window);
     loadButton.draw(window);
-    window.draw(divider);
     window.draw(text);
 
     window.display();
@@ -127,33 +136,26 @@ void GUI::render() {
 Button::Button() {
 }
 
-Button::Button(const sf::Vector2f& position, const sf::Vector2f& size, const sf::String& text, const sf::Font& font, const sf::Color& color) {
-    shape.setPosition(position);
-    shape.setSize(size);
-    shape.setFillColor(color);
-
-    buttonText.setFont(font);
-    buttonText.setString(text);
-    buttonText.setCharacterSize(16);
-    buttonText.setFillColor(sf::Color::White);
-    buttonText.setOutlineColor(sf::Color::Black);
-    buttonText.setOutlineThickness(0.4);
-
-    // Center the text in the button
-    sf::FloatRect textBounds = buttonText.getLocalBounds();
-    buttonText.setOrigin(textBounds.left + textBounds.width / 2, textBounds.top + textBounds.height / 2);
-    buttonText.setPosition(position.x + size.x / 2, position.y + size.y / 2);
+Button::Button(const sf::Vector2f& position, const sf::Vector2f& size, const std::string& imagePath) {
+    texture = std::make_shared<sf::Texture>();  // Create texture using shared_ptr
+    
+    if (!texture->loadFromFile(imagePath)) {
+        std::cerr << "Failed to load button image: " << imagePath << std::endl;
+    }
+    
+    sprite.setTexture(*texture);  // Dereference the pointer
+    sprite.setPosition(position);
+    sprite.setScale(size.x / texture->getSize().x, size.y / texture->getSize().y);
 }
 
 void Button::draw(sf::RenderWindow& window) {
-    window.draw(shape);
-    window.draw(buttonText);
+    window.draw(sprite);
 }
 
 bool Button::clicked(const sf::Event& event) {
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
         sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
-        if (shape.getGlobalBounds().contains(mousePos)) {
+        if (sprite.getGlobalBounds().contains(mousePos)) {
             return true;
         }
     }

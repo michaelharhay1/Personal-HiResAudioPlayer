@@ -13,10 +13,15 @@ public:
 
     void draw(sf::RenderWindow& window);
     bool clicked(const sf::Event& event);
+    void update(const sf::RenderWindow& window);
 
 private:
     std::shared_ptr<sf::Texture> texture;
     sf::Sprite sprite;
+    bool isHovered = false;
+
+    sf::Color normalColor{255, 255, 255, 255};
+    sf::Color hoverColor{200, 200, 200, 255};
 };
 
 class GUI {

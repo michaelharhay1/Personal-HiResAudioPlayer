@@ -56,7 +56,16 @@ void GUI::createMainWindow() {
 }
 
 void GUI::update() {
+    // Audio updates
     audioPlayer.update();
+
+    // Button updates
+    playButton.update(window);
+    pauseButton.update(window);
+    stopButton.update(window);
+    prevButton.update(window);
+    nextButton.update(window);
+    loadButton.update(window);
 
     // Get the currently playing song title from the AudioPlayer
     std::string currentTrackPath = audioPlayer.getCurrentTrack();
@@ -159,13 +168,14 @@ Button::Button() {
 }
 
 Button::Button(const sf::Vector2f& position, const sf::Vector2f& size, const std::string& imagePath) {
-    texture = std::make_shared<sf::Texture>();  // Create texture using shared_ptr
+    texture = std::make_shared<sf::Texture>();
     
     if (!texture->loadFromFile(imagePath)) {
         std::cerr << "Failed to load button image: " << imagePath << std::endl;
     }
-    
-    sprite.setTexture(*texture);  // Dereference the pointer
+    texture->setSmooth(true);
+
+    sprite.setTexture(*texture);
     sprite.setPosition(position);
     sprite.setScale(size.x / texture->getSize().x, size.y / texture->getSize().y);
 }
@@ -184,3 +194,16 @@ bool Button::clicked(const sf::Event& event) {
     return false;
 }
 
+void Button::update(const sf::RenderWindow& window) {
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f worldPos = window.mapPixelToCoords(mousePos);
+    
+    isHovered = sprite.getGlobalBounds().contains(worldPos);
+    
+    if (isHovered) {
+        sprite.setColor(hoverColor);
+    } 
+    else {
+        sprite.setColor(normalColor);
+    }
+}

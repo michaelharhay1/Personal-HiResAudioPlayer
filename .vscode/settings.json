@@ -117,6 +117,7 @@
     "memory": "cpp",
     "print": "cpp",
     "queue": "cpp",
-    "stack": "cpp"
+    "stack": "cpp",
+    "iomanip": "cpp"
   }
 }

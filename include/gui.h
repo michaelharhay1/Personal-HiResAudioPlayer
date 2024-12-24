@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <filesystem>
 #include "audio_player.h"
 
 class Button {
@@ -28,6 +29,7 @@ private:
     void update();
     void handleEvents();
     void render();
+    std::string parseTitle(const std::string& filePath);
     
     sf::RenderWindow window;
 

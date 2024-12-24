@@ -53,11 +53,20 @@ void GUI::createMainWindow() {
     text.setPosition(sf::Vector2f(25, 250));
     text.setFillColor(sf::Color::White);
     text.setCharacterSize(20);
-    text.setString("No distractions. Only music.");
 }
 
 void GUI::update() {
     audioPlayer.update();
+
+    // Get the currently playing song title from the AudioPlayer
+    std::string currentTrackPath = audioPlayer.getCurrentTrack();
+    if (!currentTrackPath.empty()) {
+        std::string trackTitle = parseTitle(currentTrackPath);
+        text.setString("Currently playing: " + trackTitle);
+    } 
+    else {
+        text.setString("No distractions. Only music.");
+    }
 }
 
 void GUI::handleEvents() {
@@ -129,6 +138,19 @@ void GUI::render() {
     window.draw(text);
 
     window.display();
+}
+
+std::string GUI::parseTitle(const std::string& filePath) {
+    std::filesystem::path path(filePath);
+    std::string fileName = path.filename().string(); // Example: "01. Dunkelheit.flac"
+    
+    // Find the last '.' to remove the extension
+    size_t lastDot = fileName.find_last_of('.');
+    if (lastDot != std::string::npos) {
+        fileName = fileName.substr(0, lastDot); // Remove ".flac"
+    }
+    
+    return fileName; // Return "01. Dunkelheit"
 }
 
 

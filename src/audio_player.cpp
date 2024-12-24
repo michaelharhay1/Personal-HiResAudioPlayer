@@ -63,6 +63,13 @@ void AudioPlayer::update() {
     }
 }
 
+std::string AudioPlayer::getCurrentTrack() const {
+    if (playlist.empty()) {
+        return "";
+    }
+    return playlist[currentTrackIndex];
+}
+
 void AudioPlayer::playCurrentTrack() {
     if (currentTrackIndex < playlist.size()) {
         stop();

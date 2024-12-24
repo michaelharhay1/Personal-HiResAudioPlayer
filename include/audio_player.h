@@ -17,6 +17,7 @@ public:
     void previous();
     bool isPlaying() const;
     void update();
+    std::string getCurrentTrack() const;
 
 private:
     std::vector<std::string> playlist;
